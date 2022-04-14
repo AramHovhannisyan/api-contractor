@@ -1,0 +1,22 @@
+version: "3"
+services:
+  node:
+    # container_name: node
+    build: .
+    ports:
+      - "127.0.0.1:$PORT:$PORT"
+    command: npm start
+    depends_on:
+      - mongo
+    restart: unless-stopped
+  mongo:
+    # container_name: mongo
+    image: mongo
+    ports:
+      - "$MONGO_PORT:27017"
+    volumes:
+      - api-contractor:/data/db
+    restart: unless-stopped
+
+volumes:
+  api-contractor: {}
