@@ -9,7 +9,9 @@ const hpp = require('hpp')
 const cookieParser = require('cookie-parser')
 const compression = require('compression')
 
-const testRouter = require('./routes/testRoutes')
+const AppError = require('./utils/AppError')
+const contractRouter = require('./routes/contractRoutes')
+const globalErrorHandler = require('./controllers/errorController')
 
 const app = express()
 
@@ -64,12 +66,16 @@ app.use((req, res, next) => {
  * Mounting Routes
  */
 
-app.use('/api/v1/test', testRouter)
+app.use('/api/v1/contract', contractRouter)
 
-// Start Server
-// const port = process.env.PORT || 4000
-// const server = app.listen(port, () => {
-//     console.log(`Running On Port ${port}`);
-// })
+app.all('*', (req, res, next) => {
+    next(new AppError(`Cant find ${req.originalUrl} on this server`, 404))
+})
+
+/**
+ * specify 4 params
+ * so it's error handling function
+ */
+ app.use(globalErrorHandler)
 
 module.exports = app
