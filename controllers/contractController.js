@@ -12,7 +12,7 @@ exports.getContract = async (req, res) => {
             })
         }
 
-        const contract = await contractModel.findById(req.params.contractId)
+        const contract = await contractModel.findById(req.params.contractId).select({"_id": 0, "__v": 0})
 
         if(!contract){
             return res.status(404).json({
@@ -47,14 +47,12 @@ exports.createContract = async (req, res) => {
             })
         }
 
-        console.log(data);
-
         const contract = await contractModel.create(data)
 
         if(contract){
             return res.status(200).json({
                 status: 'success',
-                contract
+                id: contract._id
             })
         }
     } catch (error) {
