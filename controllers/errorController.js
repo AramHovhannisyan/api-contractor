@@ -1,7 +1,5 @@
 module.exports = (err, req, res, next) => {
 
-    console.log("ErrorHandler: ", process.env);
-
     if(process.env.NODE_ENV == 'prod '){
             // Rendered Website
             err.statuseCode = err.statuseCode || 500
